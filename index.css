@@ -1,0 +1,69 @@
+#root {
+  display: flex;
+  height: 98vh; }
+
+#drum-machine {
+  display: flex;
+  flex-direction: column;
+  width: 25em;
+  margin: auto;
+  border: 1px solid #000000; }
+
+.display-wrap {
+  display: flex;
+  margin: 0.5em 0.5em;
+  height: 2em;
+  border: 1px solid #000000; }
+
+#display {
+  margin: auto; }
+
+.drum-pads {
+  margin-left: 0.5em;
+  margin-bottom: 0.5em; }
+
+.row {
+  display: flex;
+  flex-direction: row; }
+
+.column {
+  display: flex;
+  flex-direction: column; }
+
+.drum-pads-row {
+  display: flex;
+  flex-direction: row; }
+
+.drum-pad {
+  display: flex;
+  width: 5em;
+  height: 5em;
+  border: 1px solid #000000; }
+
+.letter-key {
+  margin: auto; }
+
+.drum-pad-controls {
+  border: 1px solid #000000; }
+
+.volume-wrapper {
+  display: inline-block;
+  width: 2em;
+  border: 1px solid #000000; }
+  .volume-wrapper input {
+    width: 16em;
+    height: 2em;
+    margin: 0;
+    transform-origin: 1em 1.5em 0;
+    transform: rotate(90deg); }
+
+.switch-btn-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; }
+
+.switch-btn {
+  width: 4em;
+  height: 1.5em;
+  margin: 1em;
+  border: 1px solid #000000; }
