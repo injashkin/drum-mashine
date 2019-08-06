@@ -4,16 +4,23 @@ class App extends React.Component {
     constructor(props) {
         super(props)
 
-        this.handleClick = this.handleClick.bind(this);
+        this.hendleOnMouseDown = this.hendleOnMouseDown.bind(this);
+        this.hendleOnMouseUp = this.hendleOnMouseUp.bind(this);
 
         this.state = {
             display: "Off"
         }
     }
 
-    handleClick() {
+    hendleOnMouseDown() {
         this.setState({
             display: "On"
+        })
+    }
+
+    hendleOnMouseUp() {
+        this.setState({
+            display: "Off"
         })
     }
 
@@ -21,11 +28,14 @@ class App extends React.Component {
         return (
             <div id="drum-machine">
 
-                <Display display={this.state.display}/>
+                <Display display={this.state.display} />
 
                 <div className="row">
 
-                    <DrumPads handleClick={this.handleClick}/>
+                    <DrumPads
+                        hendleOnMouseDown={this.hendleOnMouseDown}
+                        hendleOnMouseUp={this.hendleOnMouseUp}
+                    />
                     <DrumPadControls />
 
                 </div>
@@ -48,56 +58,40 @@ const DrumPads = (props) => {
         <div className="drum-pads">
 
             <div className="row">
-                <div className="drum-pad" onClick={props.handleClick}>
-                    <audio className='clip' id="Q" src=""></audio>
-                    <div className="letter-key">Q</div>
-                </div>
+                <DrumPad
+                    id="Q"
+                    hendleOnMouseDown={props.hendleOnMouseDown}
+                    hendleOnMouseUp={props.hendleOnMouseUp}
+                />
+                <DrumPad id="W" />
+                <DrumPad id="E" />
 
-                <div className="drum-pad">
-                    <audio className='clip' id="W" src=""></audio>
-                    <div className="letter-key">W</div>
-                </div>
-
-                <div className="drum-pad">
-                    <audio className='clip' id="E" src=""></audio>
-                    <div className="letter-key">E</div>
-                </div>
-            </div>
-
-
-            <div className="row">
-                <div className="drum-pad">
-                    <audio className='clip' id="A" src=""></audio>
-                    <div className="letter-key">A</div>
-                </div>
-
-                <div className="drum-pad">
-                    <audio className='clip' id="S" src=""></audio>
-                    <div className="letter-key">S</div>
-                </div>
-
-                <div className="drum-pad">
-                    <audio className='clip' id="D" src=""></audio>
-                    <div className="letter-key">D</div>
-                </div>
             </div>
 
             <div className="row">
-                <div className="drum-pad">
-                    <audio className='clip' id="Z" src=""></audio>
-                    <div className="letter-key">Z</div>
-                </div>
-
-                <div className="drum-pad">
-                    <audio className='clip' id="X" src=""></audio>
-                    <div className="letter-key">X</div>
-                </div>
-
-                <div className="drum-pad">
-                    <audio className='clip' id="C" src=""></audio>
-                    <div className="letter-key">C</div>
-                </div>
+                <DrumPad id="A" />
+                <DrumPad id="S" />
+                <DrumPad id="D" />
             </div>
+
+            <div className="row">
+                <DrumPad id="Z" />
+                <DrumPad id="X" />
+                <DrumPad id="C" />
+            </div>
+        </div>
+    )
+}
+
+const DrumPad = (props) => {
+    return (
+        <div
+            className="drum-pad"
+            onMouseDown={props.hendleOnMouseDown}
+            onMouseUp={props.hendleOnMouseUp}
+        >
+            <audio className='clip' id={props.id} src=""></audio>
+            <div className="letter-key">{props.id}</div>
         </div>
     )
 }

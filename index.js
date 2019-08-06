@@ -16,7 +16,8 @@ var App = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
-        _this.handleClick = _this.handleClick.bind(_this);
+        _this.hendleOnMouseDown = _this.hendleOnMouseDown.bind(_this);
+        _this.hendleOnMouseUp = _this.hendleOnMouseUp.bind(_this);
 
         _this.state = {
             display: "Off"
@@ -25,10 +26,17 @@ var App = function (_React$Component) {
     }
 
     _createClass(App, [{
-        key: "handleClick",
-        value: function handleClick() {
+        key: "hendleOnMouseDown",
+        value: function hendleOnMouseDown() {
             this.setState({
                 display: "On"
+            });
+        }
+    }, {
+        key: "hendleOnMouseUp",
+        value: function hendleOnMouseUp() {
+            this.setState({
+                display: "Off"
             });
         }
     }, {
@@ -41,7 +49,10 @@ var App = function (_React$Component) {
                 React.createElement(
                     "div",
                     { className: "row" },
-                    React.createElement(DrumPads, { handleClick: this.handleClick }),
+                    React.createElement(DrumPads, {
+                        hendleOnMouseDown: this.hendleOnMouseDown,
+                        hendleOnMouseUp: this.hendleOnMouseUp
+                    }),
                     React.createElement(DrumPadControls, null)
                 )
             );
@@ -70,104 +81,44 @@ var DrumPads = function DrumPads(props) {
         React.createElement(
             "div",
             { className: "row" },
-            React.createElement(
-                "div",
-                { className: "drum-pad", onClick: props.handleClick },
-                React.createElement("audio", { className: "clip", id: "Q", src: "" }),
-                React.createElement(
-                    "div",
-                    { className: "letter-key" },
-                    "Q"
-                )
-            ),
-            React.createElement(
-                "div",
-                { className: "drum-pad" },
-                React.createElement("audio", { className: "clip", id: "W", src: "" }),
-                React.createElement(
-                    "div",
-                    { className: "letter-key" },
-                    "W"
-                )
-            ),
-            React.createElement(
-                "div",
-                { className: "drum-pad" },
-                React.createElement("audio", { className: "clip", id: "E", src: "" }),
-                React.createElement(
-                    "div",
-                    { className: "letter-key" },
-                    "E"
-                )
-            )
+            React.createElement(DrumPad, {
+                id: "Q",
+                hendleOnMouseDown: props.hendleOnMouseDown,
+                hendleOnMouseUp: props.hendleOnMouseUp
+            }),
+            React.createElement(DrumPad, { id: "W" }),
+            React.createElement(DrumPad, { id: "E" })
         ),
         React.createElement(
             "div",
             { className: "row" },
-            React.createElement(
-                "div",
-                { className: "drum-pad" },
-                React.createElement("audio", { className: "clip", id: "A", src: "" }),
-                React.createElement(
-                    "div",
-                    { className: "letter-key" },
-                    "A"
-                )
-            ),
-            React.createElement(
-                "div",
-                { className: "drum-pad" },
-                React.createElement("audio", { className: "clip", id: "S", src: "" }),
-                React.createElement(
-                    "div",
-                    { className: "letter-key" },
-                    "S"
-                )
-            ),
-            React.createElement(
-                "div",
-                { className: "drum-pad" },
-                React.createElement("audio", { className: "clip", id: "D", src: "" }),
-                React.createElement(
-                    "div",
-                    { className: "letter-key" },
-                    "D"
-                )
-            )
+            React.createElement(DrumPad, { id: "A" }),
+            React.createElement(DrumPad, { id: "S" }),
+            React.createElement(DrumPad, { id: "D" })
         ),
         React.createElement(
             "div",
             { className: "row" },
-            React.createElement(
-                "div",
-                { className: "drum-pad" },
-                React.createElement("audio", { className: "clip", id: "Z", src: "" }),
-                React.createElement(
-                    "div",
-                    { className: "letter-key" },
-                    "Z"
-                )
-            ),
-            React.createElement(
-                "div",
-                { className: "drum-pad" },
-                React.createElement("audio", { className: "clip", id: "X", src: "" }),
-                React.createElement(
-                    "div",
-                    { className: "letter-key" },
-                    "X"
-                )
-            ),
-            React.createElement(
-                "div",
-                { className: "drum-pad" },
-                React.createElement("audio", { className: "clip", id: "C", src: "" }),
-                React.createElement(
-                    "div",
-                    { className: "letter-key" },
-                    "C"
-                )
-            )
+            React.createElement(DrumPad, { id: "Z" }),
+            React.createElement(DrumPad, { id: "X" }),
+            React.createElement(DrumPad, { id: "C" })
+        )
+    );
+};
+
+var DrumPad = function DrumPad(props) {
+    return React.createElement(
+        "div",
+        {
+            className: "drum-pad",
+            onMouseDown: props.hendleOnMouseDown,
+            onMouseUp: props.hendleOnMouseUp
+        },
+        React.createElement("audio", { className: "clip", id: props.id, src: "" }),
+        React.createElement(
+            "div",
+            { className: "letter-key" },
+            props.id
         )
     );
 };
