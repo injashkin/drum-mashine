@@ -19,6 +19,9 @@
   margin: auto; }
 
 .drum-pads {
+  display: flex;
+  flex-wrap: wrap;
+  width: 20em;
   margin-left: 0.5em;
   margin-bottom: 0.5em; }
 

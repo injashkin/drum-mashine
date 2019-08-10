@@ -7,6 +7,34 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 "use strict";
+var scene = [{
+    id: "Q",
+    src: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-1.mp3'
+}, {
+    id: "W",
+    src: 'projects.jinv.ru/projects/drum-machine/sound/IN-Buch-it.wav'
+}, {
+    id: "E",
+    src: 'projects.jinv.ru/projects/drum-machine/sound/IN-Buch-it.wav'
+}, {
+    id: "A",
+    src: 'projects.jinv.ru/projects/drum-machine/sound/IN-Buch-it.wav'
+}, {
+    id: "S",
+    src: 'projects.jinv.ru/projects/drum-machine/sound/IN-Buch-it.wav'
+}, {
+    id: "D",
+    src: 'projects.jinv.ru/projects/drum-machine/sound/IN-Buch-it.wav'
+}, {
+    id: "Z",
+    src: 'projects.jinv.ru/projects/drum-machine/sound/IN-Buch-it.wav'
+}, {
+    id: "X",
+    src: 'projects.jinv.ru/projects/drum-machine/sound/IN-Buch-it.wav'
+}, {
+    id: "C",
+    src: 'projects.jinv.ru/projects/drum-machine/sound/IN-Buch-it.wav'
+}];
 
 var App = function (_React$Component) {
     _inherits(App, _React$Component);
@@ -16,27 +44,21 @@ var App = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
-        _this.hendleOnMouseDown = _this.hendleOnMouseDown.bind(_this);
-        _this.hendleOnMouseUp = _this.hendleOnMouseUp.bind(_this);
+        _this.hendleOnClick = _this.hendleOnClick.bind(_this);
 
         _this.state = {
-            display: "Off"
+            display: "Non"
         };
         return _this;
     }
 
     _createClass(App, [{
-        key: "hendleOnMouseDown",
-        value: function hendleOnMouseDown() {
+        key: "hendleOnClick",
+        value: function hendleOnClick(event) {
+            var id = event.target.id;
+
             this.setState({
-                display: "On"
-            });
-        }
-    }, {
-        key: "hendleOnMouseUp",
-        value: function hendleOnMouseUp() {
-            this.setState({
-                display: "Off"
+                display: id
             });
         }
     }, {
@@ -50,8 +72,7 @@ var App = function (_React$Component) {
                     "div",
                     { className: "row" },
                     React.createElement(DrumPads, {
-                        hendleOnMouseDown: this.hendleOnMouseDown,
-                        hendleOnMouseUp: this.hendleOnMouseUp
+                        hendleOnClick2: this.hendleOnClick
                     }),
                     React.createElement(DrumPadControls, null)
                 )
@@ -75,34 +96,21 @@ var Display = function Display(props) {
 };
 
 var DrumPads = function DrumPads(props) {
+    var item = function item(current, index) {
+        return React.createElement(DrumPad, {
+            id: scene[index].id,
+            key: scene[index].id,
+            src: scene[index].src,
+            hendleOnClick1: props.hendleOnClick2
+        });
+    };
+
+    var drumPad = scene.map(item);
+
     return React.createElement(
         "div",
         { className: "drum-pads" },
-        React.createElement(
-            "div",
-            { className: "row" },
-            React.createElement(DrumPad, {
-                id: "Q",
-                hendleOnMouseDown: props.hendleOnMouseDown,
-                hendleOnMouseUp: props.hendleOnMouseUp
-            }),
-            React.createElement(DrumPad, { id: "W" }),
-            React.createElement(DrumPad, { id: "E" })
-        ),
-        React.createElement(
-            "div",
-            { className: "row" },
-            React.createElement(DrumPad, { id: "A" }),
-            React.createElement(DrumPad, { id: "S" }),
-            React.createElement(DrumPad, { id: "D" })
-        ),
-        React.createElement(
-            "div",
-            { className: "row" },
-            React.createElement(DrumPad, { id: "Z" }),
-            React.createElement(DrumPad, { id: "X" }),
-            React.createElement(DrumPad, { id: "C" })
-        )
+        drumPad
     );
 };
 
@@ -111,13 +119,17 @@ var DrumPad = function DrumPad(props) {
         "div",
         {
             className: "drum-pad",
-            onMouseDown: props.hendleOnMouseDown,
-            onMouseUp: props.hendleOnMouseUp
+            id: props.id,
+            onClick: props.hendleOnClick1
         },
-        React.createElement("audio", { className: "clip", id: props.id, src: "" }),
+        React.createElement(
+            "audio",
+            { className: "clip", src: props.src },
+            "audio"
+        ),
         React.createElement(
             "div",
-            { className: "letter-key" },
+            { className: "letter-key", id: props.id },
             props.id
         )
     );
@@ -133,8 +145,8 @@ var DrumPadControls = function DrumPadControls() {
             { className: "switch-btn-wrapper" },
             React.createElement(
                 "div",
-                { id: "bank", className: "switch-btn" },
-                "Bank"
+                { id: "scene", className: "switch-btn" },
+                "\u0421\u0446\u0435\u043D\u0430"
             ),
             React.createElement(
                 "div",

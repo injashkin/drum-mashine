@@ -1,26 +1,58 @@
 `use strict`
+const scene = [
+    {
+        id: "Q",
+        src: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-1.mp3'
+    },
+    {
+        id: "W",
+        src: 'projects.jinv.ru/projects/drum-machine/sound/IN-Buch-it.wav'
+    },
+    {
+        id: "E",
+        src: 'projects.jinv.ru/projects/drum-machine/sound/IN-Buch-it.wav'
+    },
+    {
+        id: "A",
+        src: 'projects.jinv.ru/projects/drum-machine/sound/IN-Buch-it.wav'
+    },
+    {
+        id: "S",
+        src: 'projects.jinv.ru/projects/drum-machine/sound/IN-Buch-it.wav'
+    },
+    {
+        id: "D",
+        src: 'projects.jinv.ru/projects/drum-machine/sound/IN-Buch-it.wav'
+    },
+    {
+        id: "Z",
+        src: 'projects.jinv.ru/projects/drum-machine/sound/IN-Buch-it.wav'
+    },
+    {
+        id: "X",
+        src: 'projects.jinv.ru/projects/drum-machine/sound/IN-Buch-it.wav'
+    },
+    {
+        id: "C",
+        src: 'projects.jinv.ru/projects/drum-machine/sound/IN-Buch-it.wav'
+    }
+];
 
 class App extends React.Component {
     constructor(props) {
         super(props)
 
-        this.hendleOnMouseDown = this.hendleOnMouseDown.bind(this);
-        this.hendleOnMouseUp = this.hendleOnMouseUp.bind(this);
+        this.hendleOnClick = this.hendleOnClick.bind(this);
 
         this.state = {
-            display: "Off"
+            display: "Non"
         }
     }
 
-    hendleOnMouseDown() {
-        this.setState({
-            display: "On"
-        })
-    }
-
-    hendleOnMouseUp() {
-        this.setState({
-            display: "Off"
+    hendleOnClick(event) {
+        const {id} = event.target
+        this.setState({            
+            display: id
         })
     }
 
@@ -33,8 +65,7 @@ class App extends React.Component {
                 <div className="row">
 
                     <DrumPads
-                        hendleOnMouseDown={this.hendleOnMouseDown}
-                        hendleOnMouseUp={this.hendleOnMouseUp}
+                        hendleOnClick2={this.hendleOnClick}
                     />
                     <DrumPadControls />
 
@@ -54,31 +85,23 @@ const Display = (props) => {
 }
 
 const DrumPads = (props) => {
+    const item = (current, index) => {
+        return (
+            <DrumPad
+                id={scene[index].id}
+                key={scene[index].id}
+                src={scene[index].src}         
+                hendleOnClick1={props.hendleOnClick2}
+            />
+        )
+
+    }
+
+    const drumPad = scene.map(item)
+
     return (
         <div className="drum-pads">
-
-            <div className="row">
-                <DrumPad
-                    id="Q"
-                    hendleOnMouseDown={props.hendleOnMouseDown}
-                    hendleOnMouseUp={props.hendleOnMouseUp}
-                />
-                <DrumPad id="W" />
-                <DrumPad id="E" />
-
-            </div>
-
-            <div className="row">
-                <DrumPad id="A" />
-                <DrumPad id="S" />
-                <DrumPad id="D" />
-            </div>
-
-            <div className="row">
-                <DrumPad id="Z" />
-                <DrumPad id="X" />
-                <DrumPad id="C" />
-            </div>
+            {drumPad}
         </div>
     )
 }
@@ -86,12 +109,12 @@ const DrumPads = (props) => {
 const DrumPad = (props) => {
     return (
         <div
-            className="drum-pad"
-            onMouseDown={props.hendleOnMouseDown}
-            onMouseUp={props.hendleOnMouseUp}
+            className="drum-pad"            
+            id={props.id}
+            onClick={props.hendleOnClick1}
         >
-            <audio className='clip' id={props.id} src=""></audio>
-            <div className="letter-key">{props.id}</div>
+            <audio className='clip' src={props.src}>audio</audio>
+            <div className="letter-key" id={props.id}>{props.id}</div>
         </div>
     )
 }
@@ -103,7 +126,7 @@ const DrumPadControls = () => {
             <Volume />
 
             <div className="switch-btn-wrapper">
-                <div id="bank" className="switch-btn">Bank</div>
+                <div id="scene" className="switch-btn">Сцена</div>
                 <div id="power" className="switch-btn">Power</div>
             </div>
         </div>
