@@ -1,40 +1,40 @@
 `use strict`
 const scene = [
     {
-        id: "Q",
+        id: 'Q',
         src: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-1.mp3'
     },
     {
-        id: "W",
-        src: 'projects.jinv.ru/projects/drum-machine/sound/IN-Buch-it.wav'
+        id: 'W',
+        src: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-2.mp3'
     },
     {
-        id: "E",
-        src: 'projects.jinv.ru/projects/drum-machine/sound/IN-Buch-it.wav'
+        id: 'E',
+        src: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-3.mp3'
     },
     {
-        id: "A",
-        src: 'projects.jinv.ru/projects/drum-machine/sound/IN-Buch-it.wav'
+        id: 'A',
+        src: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-4_1.mp3'
     },
     {
-        id: "S",
-        src: 'projects.jinv.ru/projects/drum-machine/sound/IN-Buch-it.wav'
+        id: 'S',
+        src: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-6.mp3'
     },
     {
-        id: "D",
-        src: 'projects.jinv.ru/projects/drum-machine/sound/IN-Buch-it.wav'
+        id: 'D',
+        src: 'https://s3.amazonaws.com/freecodecamp/drums/Dsc_Oh.mp3'
     },
     {
-        id: "Z",
-        src: 'projects.jinv.ru/projects/drum-machine/sound/IN-Buch-it.wav'
+        id: 'Z',
+        src: 'https://s3.amazonaws.com/freecodecamp/drums/Kick_n_Hat.mp3'
     },
     {
-        id: "X",
-        src: 'projects.jinv.ru/projects/drum-machine/sound/IN-Buch-it.wav'
+        id: 'X',
+        src: 'https://s3.amazonaws.com/freecodecamp/drums/RP4_KICK_1.mp3'
     },
     {
-        id: "C",
-        src: 'projects.jinv.ru/projects/drum-machine/sound/IN-Buch-it.wav'
+        id: 'C',
+        src: 'https://s3.amazonaws.com/freecodecamp/drums/Cev_H2.mp3'
     }
 ];
 
@@ -45,101 +45,96 @@ class App extends React.Component {
         this.hendleOnClick = this.hendleOnClick.bind(this);
 
         this.state = {
-            display: "Non"
+            display: 'Non',
+            playSound: ''
         }
     }
 
     hendleOnClick(event) {
-        const {id} = event.target
-        this.setState({            
-            display: id
+        const { id } = event.target
+        this.setState({
+            display: id,
+            playSound: ''
         })
     }
 
     render() {
-        return (
-            <div id="drum-machine">
-
-                <Display display={this.state.display} />
-
-                <div className="row">
-
-                    <DrumPads
-                        hendleOnClick2={this.hendleOnClick}
-                    />
-                    <DrumPadControls />
-
-                </div>
-
-            </div>
-        )
-    }
-}
-
-const Display = (props) => {
-    return (
-        <div className="display-wrap">
-            <div id="display">{props.display}</div>
-        </div>
-    )
-}
-
-const DrumPads = (props) => {
-    const item = (current, index) => {
-        return (
-            <DrumPad
+        const drumPad = scene.map((current, index) => (
+            <DrumPads
                 id={scene[index].id}
+                onClick={this.hendleOnClick}
                 key={scene[index].id}
-                src={scene[index].src}         
-                hendleOnClick1={props.hendleOnClick2}
+                letter={scene[index].id}
+                audio={
+                    <Audio
+                        src={scene[index].src}
+                    />
+                }
             />
-        )
+        ));
 
-    }
-
-    const drumPad = scene.map(item)
-
-    return (
-        <div className="drum-pads">
-            {drumPad}
-        </div>
-    )
-}
-
-const DrumPad = (props) => {
-    return (
-        <div
-            className="drum-pad"            
-            id={props.id}
-            onClick={props.hendleOnClick1}
-        >
-            <audio className='clip' src={props.src}>audio</audio>
-            <div className="letter-key" id={props.id}>{props.id}</div>
-        </div>
-    )
-}
-
-const DrumPadControls = () => {
-    return (
-        <div className="drum-pad-controls row">
-
-            <Volume />
-
-            <div className="switch-btn-wrapper">
-                <div id="scene" className="switch-btn">Сцена</div>
-                <div id="power" className="switch-btn">Power</div>
+        return (
+            <div id='drum-machine'>
+                <Display display={this.state.display} />
+                <div className='row'>
+                    <div className='drum-pads'>
+                        {drumPad}
+                    </div>
+                    <DrumPadControls />
+                </div>
             </div>
-        </div>
-    )
+        )
+    }
 }
 
+const Display = (props) => (
+    <div className='display-wrap'>
+        <div id='display'>{props.display}</div>
+    </div>
+)
 
-const Volume = () => {
-    return (
-        <div className="volume-wrapper">
-            <input id="volume" type="range" min="0" max="100" step="1"></input>
+
+const DrumPads = (props) => (
+    <div
+        className='drum-pad'
+        id={props.id}
+        onClick={props.onClick}
+    >
+        <div
+            className='letter-key'
+        >
+            {props.letter}
+            {props.audio}
         </div>
-    )
-}
+    </div>
+)
+
+const Audio = (props) => (
+    <audio
+        className='clip'
+        //id={player}
+        //ref={props.myref}
+        src={props.src}
+    />
+)
+
+const DrumPadControls = () => (
+    <div className='drum-pad-controls row'>
+        <Volume />
+        <div className='switch-btn-wrapper'>
+            <div id='scene' className='switch-btn'>Сцена</div>
+            <div id='power' className='switch-btn'>Power</div>
+        </div>
+    </div>
+)
+
+
+
+const Volume = () => (
+    <div className='volume-wrapper'>
+        <input id='volume' type='range' min='0' max='100' step='1'></input>
+    </div>
+)
+
 
 ReactDOM.render(<App />, document.getElementById('root'));

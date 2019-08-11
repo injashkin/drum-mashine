@@ -6,34 +6,34 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-"use strict";
+'use strict';
 var scene = [{
-    id: "Q",
+    id: 'Q',
     src: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-1.mp3'
 }, {
-    id: "W",
-    src: 'projects.jinv.ru/projects/drum-machine/sound/IN-Buch-it.wav'
+    id: 'W',
+    src: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-2.mp3'
 }, {
-    id: "E",
-    src: 'projects.jinv.ru/projects/drum-machine/sound/IN-Buch-it.wav'
+    id: 'E',
+    src: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-3.mp3'
 }, {
-    id: "A",
-    src: 'projects.jinv.ru/projects/drum-machine/sound/IN-Buch-it.wav'
+    id: 'A',
+    src: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-4_1.mp3'
 }, {
-    id: "S",
-    src: 'projects.jinv.ru/projects/drum-machine/sound/IN-Buch-it.wav'
+    id: 'S',
+    src: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-6.mp3'
 }, {
-    id: "D",
-    src: 'projects.jinv.ru/projects/drum-machine/sound/IN-Buch-it.wav'
+    id: 'D',
+    src: 'https://s3.amazonaws.com/freecodecamp/drums/Dsc_Oh.mp3'
 }, {
-    id: "Z",
-    src: 'projects.jinv.ru/projects/drum-machine/sound/IN-Buch-it.wav'
+    id: 'Z',
+    src: 'https://s3.amazonaws.com/freecodecamp/drums/Kick_n_Hat.mp3'
 }, {
-    id: "X",
-    src: 'projects.jinv.ru/projects/drum-machine/sound/IN-Buch-it.wav'
+    id: 'X',
+    src: 'https://s3.amazonaws.com/freecodecamp/drums/RP4_KICK_1.mp3'
 }, {
-    id: "C",
-    src: 'projects.jinv.ru/projects/drum-machine/sound/IN-Buch-it.wav'
+    id: 'C',
+    src: 'https://s3.amazonaws.com/freecodecamp/drums/Cev_H2.mp3'
 }];
 
 var App = function (_React$Component) {
@@ -47,33 +47,51 @@ var App = function (_React$Component) {
         _this.hendleOnClick = _this.hendleOnClick.bind(_this);
 
         _this.state = {
-            display: "Non"
+            display: 'Non',
+            playSound: ''
         };
         return _this;
     }
 
     _createClass(App, [{
-        key: "hendleOnClick",
+        key: 'hendleOnClick',
         value: function hendleOnClick(event) {
             var id = event.target.id;
 
             this.setState({
-                display: id
+                display: id,
+                playSound: ''
             });
         }
     }, {
-        key: "render",
+        key: 'render',
         value: function render() {
+            var _this2 = this;
+
+            var drumPad = scene.map(function (current, index) {
+                return React.createElement(DrumPads, {
+                    id: scene[index].id,
+                    onClick: _this2.hendleOnClick,
+                    key: scene[index].id,
+                    letter: scene[index].id,
+                    audio: React.createElement(Audio, {
+                        src: scene[index].src
+                    })
+                });
+            });
+
             return React.createElement(
-                "div",
-                { id: "drum-machine" },
+                'div',
+                { id: 'drum-machine' },
                 React.createElement(Display, { display: this.state.display }),
                 React.createElement(
-                    "div",
-                    { className: "row" },
-                    React.createElement(DrumPads, {
-                        hendleOnClick2: this.hendleOnClick
-                    }),
+                    'div',
+                    { className: 'row' },
+                    React.createElement(
+                        'div',
+                        { className: 'drum-pads' },
+                        drumPad
+                    ),
                     React.createElement(DrumPadControls, null)
                 )
             );
@@ -85,73 +103,61 @@ var App = function (_React$Component) {
 
 var Display = function Display(props) {
     return React.createElement(
-        "div",
-        { className: "display-wrap" },
+        'div',
+        { className: 'display-wrap' },
         React.createElement(
-            "div",
-            { id: "display" },
+            'div',
+            { id: 'display' },
             props.display
         )
     );
 };
 
 var DrumPads = function DrumPads(props) {
-    var item = function item(current, index) {
-        return React.createElement(DrumPad, {
-            id: scene[index].id,
-            key: scene[index].id,
-            src: scene[index].src,
-            hendleOnClick1: props.hendleOnClick2
-        });
-    };
-
-    var drumPad = scene.map(item);
-
     return React.createElement(
-        "div",
-        { className: "drum-pads" },
-        drumPad
-    );
-};
-
-var DrumPad = function DrumPad(props) {
-    return React.createElement(
-        "div",
+        'div',
         {
-            className: "drum-pad",
+            className: 'drum-pad',
             id: props.id,
-            onClick: props.hendleOnClick1
+            onClick: props.onClick
         },
         React.createElement(
-            "audio",
-            { className: "clip", src: props.src },
-            "audio"
-        ),
-        React.createElement(
-            "div",
-            { className: "letter-key", id: props.id },
-            props.id
+            'div',
+            {
+                className: 'letter-key'
+            },
+            props.letter,
+            props.audio
         )
     );
 };
 
+var Audio = function Audio(props) {
+    return React.createElement('audio', {
+        className: 'clip'
+        //id={player}
+        //ref={props.myref}
+        , src: props.src
+    });
+};
+
 var DrumPadControls = function DrumPadControls() {
     return React.createElement(
-        "div",
-        { className: "drum-pad-controls row" },
+        'div',
+        { className: 'drum-pad-controls row' },
         React.createElement(Volume, null),
         React.createElement(
-            "div",
-            { className: "switch-btn-wrapper" },
+            'div',
+            { className: 'switch-btn-wrapper' },
             React.createElement(
-                "div",
-                { id: "scene", className: "switch-btn" },
-                "\u0421\u0446\u0435\u043D\u0430"
+                'div',
+                { id: 'scene', className: 'switch-btn' },
+                '\u0421\u0446\u0435\u043D\u0430'
             ),
             React.createElement(
-                "div",
-                { id: "power", className: "switch-btn" },
-                "Power"
+                'div',
+                { id: 'power', className: 'switch-btn' },
+                'Power'
             )
         )
     );
@@ -159,9 +165,9 @@ var DrumPadControls = function DrumPadControls() {
 
 var Volume = function Volume() {
     return React.createElement(
-        "div",
-        { className: "volume-wrapper" },
-        React.createElement("input", { id: "volume", type: "range", min: "0", max: "100", step: "1" })
+        'div',
+        { className: 'volume-wrapper' },
+        React.createElement('input', { id: 'volume', type: 'range', min: '0', max: '100', step: '1' })
     );
 };
 
