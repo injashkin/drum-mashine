@@ -38,53 +38,53 @@ const scene = [
     }
 ];
 
-function App() {
-    //constructor(props) {
-    //    super(props)
+class App extends React.Component {
+    constructor(props) {
+        super(props)
 
-    //    this.hendleOnClick = this.hendleOnClick.bind(this);
+        this.hendleOnClick = this.hendleOnClick.bind(this);
 
-    //    this.state = {
-    //        display: 'Non',
-    //        playSound: ''
-    //    }
-    //}
-
-    const initialState = {
-        display: 'Non',
+        this.state = {
+            display: 'Non',
+            playSound: ''
+        }
     }
-    const [state, setState] = React.useState(initialState);
 
-    const hendleOnClick = (e) => {
-        //if (audio) {
-        //    audio.pause();
-        //}
-        const audio = new Audio(e.target.dataset.src);
-        audio.play();
-        setState({
-            display: 'Yes'
+    hendleOnClick(e) {
+        const { id } = e.target
+        this.setState({
+            display: id,
+            playSound: ''
         })
     }
 
-    return (
-        <div id='drum-machine'>
-            <Display display={state.display} />
-            <div className='row'>
-                <div className='drum-pads'>
-                    {scene.map((index) => (
-                        <DrumPads
-                            onClick={hendleOnClick}
-                            key={index.id}
-                            letter={index.id}
-                            src={index.src}
-                        />
-                    ))}
-                </div>
-                <DrumPadControls />
-            </div>
-        </div>
-    )
+    render() {
+        const drumPad = scene.map((current, index) => (
+            <DrumPads
+                id={scene[index].id}
+                onClick={this.hendleOnClick}
+                key={scene[index].id}
+                letter={scene[index].id}
+                audio={
+                    <Audio
+                    ref={}
+                     />
+                }
+            />
+        ));
 
+        return (
+            <div id='drum-machine'>
+                <Display display={this.state.display} />
+                <div className='row'>
+                    <div className='drum-pads'>
+                        {drumPad}
+                    </div>
+                    <DrumPadControls />
+                </div>
+            </div>
+        )
+    }
 }
 
 const Display = (props) => (
@@ -97,14 +97,14 @@ const Display = (props) => (
 const DrumPads = (props) => (
     <div
         className='drum-pad'
-        id={props.letter}
+        id={props.id}
         onClick={props.onClick}
-        data-src={props.src}
     >
         <div
             className='letter-key'
         >
             {props.letter}
+            {props.audio}
         </div>
     </div>
 )
