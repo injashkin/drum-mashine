@@ -1,7 +1,7 @@
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 'use strict';
-var scene = [{
+var sceneA = [{
     id: 'Q',
     src: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-1.mp3'
 }, {
@@ -31,19 +31,10 @@ var scene = [{
 }];
 
 function App() {
-    //constructor(props) {
-    //    super(props)
-
-    //    this.hendleOnClick = this.hendleOnClick.bind(this);
-
-    //    this.state = {
-    //        display: 'Non',
-    //        playSound: ''
-    //    }
-    //}
 
     var initialState = {
-        display: 'Non'
+        display: 'Играй',
+        power: 'Off'
     };
 
     var _React$useState = React.useState(initialState),
@@ -52,15 +43,15 @@ function App() {
         setState = _React$useState2[1];
 
     var hendleOnClick = function hendleOnClick(e) {
-        //if (audio) {
-        //    audio.pause();
-        //}
         var audio = new Audio(e.target.dataset.src);
         audio.play();
+        var letterKey = e.target.id;
         setState({
-            display: 'Yes'
+            display: letterKey
         });
     };
+
+    var hendlePower = function hendlePower(power) {};
 
     return React.createElement(
         'div',
@@ -72,7 +63,7 @@ function App() {
             React.createElement(
                 'div',
                 { className: 'drum-pads' },
-                scene.map(function (index) {
+                sceneA.map(function (index) {
                     return React.createElement(DrumPads, {
                         onClick: hendleOnClick,
                         key: index.id,
@@ -117,15 +108,6 @@ var DrumPads = function DrumPads(props) {
     );
 };
 
-//const Audio = (props) => (
-//   <audio
-//       className='clip'
-//id={player}
-//ref={props.myref}
-//       src={props.src}
-//    />
-//)
-
 var DrumPadControls = function DrumPadControls() {
     return React.createElement(
         'div',
@@ -136,7 +118,7 @@ var DrumPadControls = function DrumPadControls() {
             { className: 'switch-btn-wrapper' },
             React.createElement(
                 'div',
-                { id: 'scene', className: 'switch-btn' },
+                { id: 'sceneA', className: 'switch-btn' },
                 '\u0421\u0446\u0435\u043D\u0430'
             ),
             React.createElement(

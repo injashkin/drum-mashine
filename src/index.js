@@ -1,5 +1,5 @@
 `use strict`
-const scene = [
+const sceneA = [
     {
         id: 'Q',
         src: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-1.mp3'
@@ -36,34 +36,28 @@ const scene = [
         id: 'C',
         src: 'https://s3.amazonaws.com/freecodecamp/drums/Cev_H2.mp3'
     }
-];
+]
 
 function App() {
-    //constructor(props) {
-    //    super(props)
-
-    //    this.hendleOnClick = this.hendleOnClick.bind(this);
-
-    //    this.state = {
-    //        display: 'Non',
-    //        playSound: ''
-    //    }
-    //}
 
     const initialState = {
-        display: 'Non',
+        display: 'Играй',
+        power: 'Off'
     }
-    const [state, setState] = React.useState(initialState);
 
-    const hendleOnClick = (e) => {
-        //if (audio) {
-        //    audio.pause();
-        //}
-        const audio = new Audio(e.target.dataset.src);
-        audio.play();
+    const [state, setState] = React.useState(initialState)
+
+    const hendleOnClick = (e) => {        
+        const audio = new Audio(e.target.dataset.src)        
+        audio.play()        
+        const letterKey = e.target.id
         setState({
-            display: 'Yes'
+            display: letterKey
         })
+    }   
+    
+    const hendlePower = (power) => {
+        
     }
 
     return (
@@ -71,12 +65,12 @@ function App() {
             <Display display={state.display} />
             <div className='row'>
                 <div className='drum-pads'>
-                    {scene.map((index) => (
+                    {sceneA.map((index) => (
                         <DrumPads
                             onClick={hendleOnClick}
                             key={index.id}
                             letter={index.id}
-                            src={index.src}
+                            src={index.src}                            
                         />
                     ))}
                 </div>
@@ -109,26 +103,15 @@ const DrumPads = (props) => (
     </div>
 )
 
-//const Audio = (props) => (
-//   <audio
-//       className='clip'
-//id={player}
-//ref={props.myref}
-//       src={props.src}
-//    />
-//)
-
 const DrumPadControls = () => (
     <div className='drum-pad-controls row'>
         <Volume />
         <div className='switch-btn-wrapper'>
-            <div id='scene' className='switch-btn'>Сцена</div>
+            <div id='sceneA' className='switch-btn'>Сцена</div>
             <div id='power' className='switch-btn'>Power</div>
         </div>
     </div>
 )
-
-
 
 const Volume = () => (
     <div className='volume-wrapper'>
@@ -136,5 +119,4 @@ const Volume = () => (
     </div>
 )
 
-
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById('root'))
