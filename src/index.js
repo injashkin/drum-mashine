@@ -38,43 +38,103 @@ const sceneA = [
     }
 ]
 
+const sceneB = [
+    {
+        id: 'Q',
+        src: 'https://s3.amazonaws.com/freecodecamp/drums/Chord_1.mp3'
+    }, {
+        id: 'W',
+        src: 'https://s3.amazonaws.com/freecodecamp/drums/Chord_2.mp3'
+    }, {
+        id: 'E',
+        src: 'https://s3.amazonaws.com/freecodecamp/drums/Chord_3.mp3'
+    }, {
+        id: 'A',
+        src: 'https://s3.amazonaws.com/freecodecamp/drums/Give_us_a_light.mp3'
+    }, {
+        id: 'S',
+        src: 'https://s3.amazonaws.com/freecodecamp/drums/Dry_Ohh.mp3'
+    }, {
+        id: 'D',
+        src: 'https://s3.amazonaws.com/freecodecamp/drums/Bld_H1.mp3'
+    }, {
+        id: 'Z',
+        src: 'https://s3.amazonaws.com/freecodecamp/drums/punchy_kick_1.mp3'
+    }, {
+        id: 'X',
+        src: 'https://s3.amazonaws.com/freecodecamp/drums/side_stick_1.mp3'
+    }, {
+        id: 'C',
+        src: 'https://s3.amazonaws.com/freecodecamp/drums/Brk_Snr.mp3'
+    }
+]
+
+var selectScene = sceneA
+
 function App() {
 
-    const initialState = {
-        display: 'Играй',
-        power: 'Off'
+    const [stateDisplay, setDisplay] = React.useState({ display: 'Play' })
+    const [stateVolume, setVolume] = React.useState({ volume: '50' })
+    const [stateScene, setScene] = React.useState({ scene: 'A' })
+    const [statePower, setPower] = React.useState({ power: 'On' }) 
+
+    const handlePad = (e) => {
+        if (statePower.power === 'On') {
+            var audio = new Audio()
+            audio.volume = stateVolume.volume / 100
+            audio.src = e.target.dataset.src  
+            audio.play()            
+            const letterKey = e.target.id
+            setDisplay({ display: letterKey })     
+        }
     }
 
-    const [state, setState] = React.useState(initialState)
+    const handleVolume = (e) => {        
+        setVolume({ volume: e.target.value })
+        if (statePower.power === 'On') {
+            setDisplay({ display: 'Volume: ' + e.target.value + '%' })
+        }
+    }
 
-    const hendleOnClick = (e) => {        
-        const audio = new Audio(e.target.dataset.src)        
-        audio.play()        
-        const letterKey = e.target.id
-        setState({
-            display: letterKey
-        })
-    }   
-    
-    const hendlePower = (power) => {
-        
+    const handleScene = () => {
+        const switchScene = stateScene.scene === 'A' ? 'B' : 'A'
+        const messageDisplay = switchScene === 'A' ? 'Scene А' : 'Scene B'
+        selectScene = switchScene === 'A' ? sceneA : sceneB
+        setScene({ scene: switchScene })
+        if (statePower.power === 'On') {
+            setDisplay({ display: messageDisplay })
+        }
+    }
+
+    const handlePower = () => {
+        const switchPower = statePower.power === 'On' ? 'Off' : 'On'
+        const messageDisplay = switchPower === 'On' ? 'Play' : 'Power off'
+        setDisplay({ display: messageDisplay })
+        setPower({ power: switchPower })
     }
 
     return (
         <div id='drum-machine'>
-            <Display display={state.display} />
+            <Display display={stateDisplay.display} />
             <div className='row'>
                 <div className='drum-pads'>
-                    {sceneA.map((index) => (
+                    {selectScene.map((index) => (
                         <DrumPads
-                            onClick={hendleOnClick}
+                            onClick={handlePad}
                             key={index.id}
                             letter={index.id}
-                            src={index.src}                            
+                            src={index.src}
                         />
                     ))}
                 </div>
-                <DrumPadControls />
+                <DrumPadControls                    
+                    volume={stateVolume.volume}
+                    handleVolume={handleVolume}
+                    scene={stateScene.scene}
+                    onScene={handleScene}
+                    power={statePower.power}
+                    onPower={handlePower}
+                />
             </div>
         </div>
     )
@@ -103,19 +163,53 @@ const DrumPads = (props) => (
     </div>
 )
 
-const DrumPadControls = () => (
+const DrumPadControls = (props) => (
     <div className='drum-pad-controls row'>
-        <Volume />
+        <Volume            
+            volume={props.volume}
+            handleVolume={props.handleVolume}
+        />
         <div className='switch-btn-wrapper'>
-            <div id='sceneA' className='switch-btn'>Сцена</div>
-            <div id='power' className='switch-btn'>Power</div>
+            <Scene
+                scene={props.scene}
+                onScene={props.onScene}
+            />
+            <Power
+                power={props.power}
+                onPower={props.onPower}
+            />
         </div>
     </div>
 )
 
-const Volume = () => (
+const Volume = (props) => (
     <div className='volume-wrapper'>
-        <input id='volume' type='range' min='0' max='100' step='1'></input>
+        <input
+            id='volume'
+            type='range' min='0' max='100' step='1'            
+            value={props.volume}
+            onChange={props.handleVolume}
+        />
+    </div>
+)
+
+const Scene = (props) => (
+    <div
+        id='scene'
+        className='switch-btn'
+        onClick={props.onScene}
+    >
+        {'Scene' + props.scene}
+    </div>
+)
+
+const Power = (props) => (
+    <
+        div id='power'
+        className='switch-btn'
+        onClick={props.onPower}
+    >
+        {'Power' + props.power}
     </div>
 )
 
