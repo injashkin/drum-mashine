@@ -7,13 +7,22 @@
   flex-direction: column;
   width: 25em;
   margin: auto;
-  border: 1px solid #000000; }
+  border: 1px solid #000000;
+  text-align: center;
+  background-color: #E0B17D; }
 
 .display-wrap {
   display: flex;
   margin: 0.5em 0.5em;
   height: 2em;
-  border: 1px solid #000000; }
+  border: 1px solid #000000;
+  background-color: #5498d1; }
+
+.display-active-color {
+  background-color: #5498d1; }
+
+.display-inactive-color {
+  background-color: #79846c; }
 
 #display {
   margin: auto; }
@@ -38,35 +47,53 @@
   flex-direction: row; }
 
 .drum-pad {
-  display: flex;
   width: 5em;
   height: 5em;
-  border: 1px solid #000000; }
+  border: 1px solid #000000;
+  padding-top: 1.7em;
+  box-sizing: border-box;
+  background-color: #5A9966;
+  cursor: pointer; }
+
+.power-on-pad {
+  background: radial-gradient(#b6d6bc, #5A9966); }
 
 .letter-key {
   margin: auto; }
 
 .drum-pad-controls {
-  border: 1px solid #000000; }
+  border: 1px solid #000000;
+  margin-bottom: 0.5em;
+  margin-right: 0.5em; }
 
 .volume-wrapper {
   display: inline-block;
   width: 2em;
-  border: 1px solid #000000; }
+  border: 1px solid #000000;
+  background-color: #743d30; }
   .volume-wrapper input {
     width: 16em;
     height: 2em;
     margin: 0;
-    transform-origin: 1em 1.5em 0;
-    transform: rotate(90deg); }
+    transform-origin: 8.5em 8.5em 0;
+    transform: rotate(-90deg);
+    cursor: pointer; }
 
 .switch-btn-wrapper {
   display: flex;
   flex-direction: column;
-  justify-content: space-between; }
+  justify-content: space-between;
+  background-color: #E0852C; }
 
 .switch-btn {
   width: 4em;
   height: 1.5em;
   margin: 1em;
-  border: 1px solid #000000; }
+  border: 1px solid #000000;
+  cursor: pointer; }
+
+.power-active-color {
+  background-color: #00AD20; }
+
+.power-inactive-color {
+  background-color: #5A9966; }

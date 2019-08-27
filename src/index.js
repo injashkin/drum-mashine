@@ -76,20 +76,20 @@ function App() {
     const [stateDisplay, setDisplay] = React.useState({ display: 'Play' })
     const [stateVolume, setVolume] = React.useState({ volume: '50' })
     const [stateScene, setScene] = React.useState({ scene: 'A' })
-    const [statePower, setPower] = React.useState({ power: 'On' }) 
+    const [statePower, setPower] = React.useState({ power: 'On' })
 
     const handlePad = (e) => {
         if (statePower.power === 'On') {
             var audio = new Audio()
             audio.volume = stateVolume.volume / 100
-            audio.src = e.target.dataset.src  
-            audio.play()            
+            audio.src = e.target.dataset.src
+            audio.play()
             const letterKey = e.target.id
-            setDisplay({ display: letterKey })     
+            setDisplay({ display: letterKey })
         }
     }
 
-    const handleVolume = (e) => {        
+    const handleVolume = (e) => {
         setVolume({ volume: e.target.value })
         if (statePower.power === 'On') {
             setDisplay({ display: 'Volume: ' + e.target.value + '%' })
@@ -114,8 +114,11 @@ function App() {
     }
 
     return (
-        <div id='drum-machine'>
-            <Display display={stateDisplay.display} />
+        <div id='drum-machine' className='drum-machin'>
+            <Display
+                display={stateDisplay.display}
+                power={statePower.power}
+            />
             <div className='row'>
                 <div className='drum-pads'>
                     {selectScene.map((index) => (
@@ -124,10 +127,11 @@ function App() {
                             key={index.id}
                             letter={index.id}
                             src={index.src}
+                            power={statePower.power}
                         />
                     ))}
                 </div>
-                <DrumPadControls                    
+                <DrumPadControls
                     volume={stateVolume.volume}
                     handleVolume={handleVolume}
                     scene={stateScene.scene}
@@ -141,31 +145,34 @@ function App() {
 
 }
 
-const Display = (props) => (
-    <div className='display-wrap'>
-        <div id='display'>{props.display}</div>
-    </div>
-)
+const Display = (props) => {   
+    const colorDisplay = props.power === 'On' ? 'display-wrap display-active-color' : 'display-wrap display-inactive-color'
+    return (
+        <div className={colorDisplay}>
+            <div id='display'>{props.display}</div>
+        </div>
+    )
+}
 
 
-const DrumPads = (props) => (
-    <div
-        className='drum-pad'
-        id={props.letter}
-        onClick={props.onClick}
-        data-src={props.src}
-    >
+const DrumPads = (props) => {
+    console.log(props.power)
+    const powerOnPad = props.power === 'On' ? 'drum-pad power-on-pad' : 'drum-pad'
+    return (
         <div
-            className='letter-key'
+            className={powerOnPad}
+            id={props.letter}
+            onClick={props.onClick}
+            data-src={props.src}
         >
             {props.letter}
         </div>
-    </div>
-)
+    )
+}
 
 const DrumPadControls = (props) => (
     <div className='drum-pad-controls row'>
-        <Volume            
+        <Volume
             volume={props.volume}
             handleVolume={props.handleVolume}
         />
@@ -186,7 +193,7 @@ const Volume = (props) => (
     <div className='volume-wrapper'>
         <input
             id='volume'
-            type='range' min='0' max='100' step='1'            
+            type='range' min='0' max='100' step='1'
             value={props.volume}
             onChange={props.handleVolume}
         />
@@ -203,14 +210,19 @@ const Scene = (props) => (
     </div>
 )
 
-const Power = (props) => (
-    <
-        div id='power'
-        className='switch-btn'
-        onClick={props.onPower}
-    >
-        {'Power' + props.power}
-    </div>
-)
+
+
+const Power = (props) => {
+    const colorPower = (props.power === 'On') ? 'switch-btn power-active-color' : 'switch-btn power-inactive-color'
+    return (
+        <div
+            id='power'
+            className={colorPower}
+            onClick={props.onPower}
+        >
+            {'Power' + props.power}
+        </div >
+    )
+}
 
 ReactDOM.render(<App />, document.getElementById('root'))

@@ -119,8 +119,11 @@ function App() {
 
     return React.createElement(
         'div',
-        { id: 'drum-machine' },
-        React.createElement(Display, { display: stateDisplay.display }),
+        { id: 'drum-machine', className: 'drum-machin' },
+        React.createElement(Display, {
+            display: stateDisplay.display,
+            power: statePower.power
+        }),
         React.createElement(
             'div',
             { className: 'row' },
@@ -132,7 +135,8 @@ function App() {
                         onClick: handlePad,
                         key: index.id,
                         letter: index.id,
-                        src: index.src
+                        src: index.src,
+                        power: statePower.power
                     });
                 })
             ),
@@ -149,9 +153,10 @@ function App() {
 }
 
 var Display = function Display(props) {
+    var colorDisplay = props.power === 'On' ? 'display-wrap display-active-color' : 'display-wrap display-inactive-color';
     return React.createElement(
         'div',
-        { className: 'display-wrap' },
+        { className: colorDisplay },
         React.createElement(
             'div',
             { id: 'display' },
@@ -161,21 +166,17 @@ var Display = function Display(props) {
 };
 
 var DrumPads = function DrumPads(props) {
+    console.log(props.power);
+    var powerOnPad = props.power === 'On' ? 'drum-pad power-on-pad' : 'drum-pad';
     return React.createElement(
         'div',
         {
-            className: 'drum-pad',
+            className: powerOnPad,
             id: props.letter,
             onClick: props.onClick,
             'data-src': props.src
         },
-        React.createElement(
-            'div',
-            {
-                className: 'letter-key'
-            },
-            props.letter
-        )
+        props.letter
     );
 };
 
@@ -228,10 +229,12 @@ var Scene = function Scene(props) {
 };
 
 var Power = function Power(props) {
+    var colorPower = props.power === 'On' ? 'switch-btn power-active-color' : 'switch-btn power-inactive-color';
     return React.createElement(
         'div',
-        { id: 'power',
-            className: 'switch-btn',
+        {
+            id: 'power',
+            className: colorPower,
             onClick: props.onPower
         },
         'Power' + props.power
