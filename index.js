@@ -2,60 +2,60 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 
 'use strict';
 var sceneA = [{
-    id: 'Q',
+    keyLetter: 'Q',
     src: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-1.mp3'
 }, {
-    id: 'W',
+    keyLetter: 'W',
     src: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-2.mp3'
 }, {
-    id: 'E',
+    keyLetter: 'E',
     src: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-3.mp3'
 }, {
-    id: 'A',
+    keyLetter: 'A',
     src: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-4_1.mp3'
 }, {
-    id: 'S',
+    keyLetter: 'S',
     src: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-6.mp3'
 }, {
-    id: 'D',
+    keyLetter: 'D',
     src: 'https://s3.amazonaws.com/freecodecamp/drums/Dsc_Oh.mp3'
 }, {
-    id: 'Z',
+    keyLetter: 'Z',
     src: 'https://s3.amazonaws.com/freecodecamp/drums/Kick_n_Hat.mp3'
 }, {
-    id: 'X',
+    keyLetter: 'X',
     src: 'https://s3.amazonaws.com/freecodecamp/drums/RP4_KICK_1.mp3'
 }, {
-    id: 'C',
+    keyLetter: 'C',
     src: 'https://s3.amazonaws.com/freecodecamp/drums/Cev_H2.mp3'
 }];
 
 var sceneB = [{
-    id: 'Q',
+    keyLetter: 'Q',
     src: 'https://s3.amazonaws.com/freecodecamp/drums/Chord_1.mp3'
 }, {
-    id: 'W',
+    keyLetter: 'W',
     src: 'https://s3.amazonaws.com/freecodecamp/drums/Chord_2.mp3'
 }, {
-    id: 'E',
+    keyLetter: 'E',
     src: 'https://s3.amazonaws.com/freecodecamp/drums/Chord_3.mp3'
 }, {
-    id: 'A',
+    keyLetter: 'A',
     src: 'https://s3.amazonaws.com/freecodecamp/drums/Give_us_a_light.mp3'
 }, {
-    id: 'S',
+    keyLetter: 'S',
     src: 'https://s3.amazonaws.com/freecodecamp/drums/Dry_Ohh.mp3'
 }, {
-    id: 'D',
+    keyLetter: 'D',
     src: 'https://s3.amazonaws.com/freecodecamp/drums/Bld_H1.mp3'
 }, {
-    id: 'Z',
+    keyLetter: 'Z',
     src: 'https://s3.amazonaws.com/freecodecamp/drums/punchy_kick_1.mp3'
 }, {
-    id: 'X',
-    src: 'https://s3.amazonaws.com/freecodecamp/drums/side_stick_1.mp3'
+    keyLetter: 'X',
+    src: 'https://s3.amazonaws.com/freecodecamp/drums/skeyLettere_stick_1.mp3'
 }, {
-    id: 'C',
+    keyLetter: 'C',
     src: 'https://s3.amazonaws.com/freecodecamp/drums/Brk_Snr.mp3'
 }];
 
@@ -84,10 +84,10 @@ function App() {
 
     var handlePad = function handlePad(e) {
         if (statePower.power === 'On') {
-            var audio = new Audio();
-            audio.volume = stateVolume.volume / 100;
-            audio.src = e.target.dataset.src;
-            audio.play();
+            //var audio = new Audio()
+            //audio.volume = stateVolume.volume / 100
+            //audio.src = e.target.dataset.src            
+            //audio.play()            
             var letterKey = e.target.id;
             setDisplay({ display: letterKey });
         }
@@ -100,8 +100,8 @@ function App() {
         }
     };
 
-    var handleScene = function handleScene() {
-        var switchScene = stateScene.scene === 'A' ? 'B' : 'A';
+    var handleScene = function handleScene(e) {
+        var switchScene = e.target.id === 'sceneA' ? 'A' : 'B';
         var messageDisplay = switchScene === 'A' ? 'Scene А' : 'Scene B';
         selectScene = switchScene === 'A' ? sceneA : sceneB;
         setScene({ scene: switchScene });
@@ -131,10 +131,10 @@ function App() {
                 'div',
                 { className: 'drum-pads' },
                 selectScene.map(function (index) {
-                    return React.createElement(DrumPads, {
+                    return React.createElement(DrumPad, {
                         onClick: handlePad,
-                        key: index.id,
-                        letter: index.id,
+                        key: index.keyLetter,
+                        letter: index.keyLetter,
                         src: index.src,
                         power: statePower.power
                     });
@@ -144,7 +144,8 @@ function App() {
                 volume: stateVolume.volume,
                 handleVolume: handleVolume,
                 scene: stateScene.scene,
-                onScene: handleScene,
+                onSceneA: handleScene,
+                onSceneB: handleScene,
                 power: statePower.power,
                 onPower: handlePower
             })
@@ -165,17 +166,22 @@ var Display = function Display(props) {
     );
 };
 
-var DrumPads = function DrumPads(props) {
-    console.log(props.power);
+var DrumPad = function DrumPad(props) {
     var powerOnPad = props.power === 'On' ? 'drum-pad power-on-pad' : 'drum-pad';
+    function playSound(e) {
+        var sound = document.getElementById(props.letter);
+        //sound.currentTime = 0
+        sound.play();
+        console.log(sound);
+    }
     return React.createElement(
         'div',
         {
-            className: powerOnPad,
-            id: props.letter,
-            onClick: props.onClick,
-            'data-src': props.src
+            className: powerOnPad
+            //id={props.letter}
+            , onClick: playSound //{props.onClick}
         },
+        React.createElement('audio', { id: props.letter, className: 'clip', src: props.src }),
         props.letter
     );
 };
@@ -193,7 +199,9 @@ var DrumPadControls = function DrumPadControls(props) {
             { className: 'switch-btn-wrapper' },
             React.createElement(Scene, {
                 scene: props.scene,
-                onScene: props.onScene
+                onSceneA: props.onSceneA,
+                onSceneB: props.onSceneB,
+                power: props.power
             }),
             React.createElement(Power, {
                 power: props.power,
@@ -217,19 +225,35 @@ var Volume = function Volume(props) {
 };
 
 var Scene = function Scene(props) {
+    var colorPower = props.power === 'On' ? 'button-active-color' : 'button-active-color-power-off';
+    var switchButtonA = props.scene === 'A' ? 'switch-btn ' + colorPower : 'switch-btn button-inactive-color';
+    var switchButtonB = props.scene === 'B' ? 'switch-btn ' + colorPower : 'switch-btn button-inactive-color';
     return React.createElement(
         'div',
-        {
-            id: 'scene',
-            className: 'switch-btn',
-            onClick: props.onScene
-        },
-        'Scene' + props.scene
+        null,
+        React.createElement(
+            'div',
+            {
+                id: 'sceneA',
+                className: switchButtonA,
+                onClick: props.onSceneA
+            },
+            'SceneA'
+        ),
+        React.createElement(
+            'div',
+            {
+                id: 'sceneB',
+                className: switchButtonB,
+                onClick: props.onSceneB
+            },
+            'SceneB'
+        )
     );
 };
 
 var Power = function Power(props) {
-    var colorPower = props.power === 'On' ? 'switch-btn power-active-color' : 'switch-btn power-inactive-color';
+    var colorPower = props.power === 'On' ? 'switch-btn button-active-color' : 'switch-btn button-inactive-color';
     return React.createElement(
         'div',
         {
@@ -237,7 +261,7 @@ var Power = function Power(props) {
             className: colorPower,
             onClick: props.onPower
         },
-        'Power' + props.power
+        'Pow' + props.power
     );
 };
 

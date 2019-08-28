@@ -86,8 +86,7 @@ $inactive-display: #79846c;
 .drum-pad-controls {    
     border: $border-bl1; 
     margin-bottom: 0.5em;
-    margin-right: 0.5em;
-    //margin-left: 0.5em;
+    margin-right: 0.5em;    
 }
 
 .volume-wrapper {
@@ -121,11 +120,16 @@ $inactive-display: #79846c;
     cursor: pointer;    
 }
 
-.power-active-color {
+.button-active-color {
+    background-color: $active-button;
+    background: radial-gradient(#b6d6bc, $active-button)
+}
+
+.button-active-color-power-off {
     background-color: $active-button;
 }
 
-.power-inactive-color {
+.button-inactive-color {
     background-color: $inactive-button;
 }
 

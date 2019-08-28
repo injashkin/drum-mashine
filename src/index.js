@@ -1,70 +1,70 @@
 `use strict`
 const sceneA = [
     {
-        id: 'Q',
+        keyLetter: 'Q',
         src: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-1.mp3'
     },
     {
-        id: 'W',
+        keyLetter: 'W',
         src: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-2.mp3'
     },
     {
-        id: 'E',
+        keyLetter: 'E',
         src: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-3.mp3'
     },
     {
-        id: 'A',
+        keyLetter: 'A',
         src: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-4_1.mp3'
     },
     {
-        id: 'S',
+        keyLetter: 'S',
         src: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-6.mp3'
     },
     {
-        id: 'D',
+        keyLetter: 'D',
         src: 'https://s3.amazonaws.com/freecodecamp/drums/Dsc_Oh.mp3'
     },
     {
-        id: 'Z',
+        keyLetter: 'Z',
         src: 'https://s3.amazonaws.com/freecodecamp/drums/Kick_n_Hat.mp3'
     },
     {
-        id: 'X',
+        keyLetter: 'X',
         src: 'https://s3.amazonaws.com/freecodecamp/drums/RP4_KICK_1.mp3'
     },
     {
-        id: 'C',
+        keyLetter: 'C',
         src: 'https://s3.amazonaws.com/freecodecamp/drums/Cev_H2.mp3'
     }
 ]
 
 const sceneB = [
     {
-        id: 'Q',
+        keyLetter: 'Q',
         src: 'https://s3.amazonaws.com/freecodecamp/drums/Chord_1.mp3'
     }, {
-        id: 'W',
+        keyLetter: 'W',
         src: 'https://s3.amazonaws.com/freecodecamp/drums/Chord_2.mp3'
     }, {
-        id: 'E',
+        keyLetter: 'E',
         src: 'https://s3.amazonaws.com/freecodecamp/drums/Chord_3.mp3'
     }, {
-        id: 'A',
+        keyLetter: 'A',
         src: 'https://s3.amazonaws.com/freecodecamp/drums/Give_us_a_light.mp3'
     }, {
-        id: 'S',
+        keyLetter: 'S',
         src: 'https://s3.amazonaws.com/freecodecamp/drums/Dry_Ohh.mp3'
     }, {
-        id: 'D',
+        keyLetter: 'D',
         src: 'https://s3.amazonaws.com/freecodecamp/drums/Bld_H1.mp3'
     }, {
-        id: 'Z',
+        keyLetter: 'Z',
         src: 'https://s3.amazonaws.com/freecodecamp/drums/punchy_kick_1.mp3'
     }, {
-        id: 'X',
-        src: 'https://s3.amazonaws.com/freecodecamp/drums/side_stick_1.mp3'
+        keyLetter: 'X',
+        src: 'https://s3.amazonaws.com/freecodecamp/drums/skeyLettere_stick_1.mp3'
     }, {
-        id: 'C',
+        keyLetter: 'C',
         src: 'https://s3.amazonaws.com/freecodecamp/drums/Brk_Snr.mp3'
     }
 ]
@@ -79,11 +79,11 @@ function App() {
     const [statePower, setPower] = React.useState({ power: 'On' })
 
     const handlePad = (e) => {
-        if (statePower.power === 'On') {
-            var audio = new Audio()
-            audio.volume = stateVolume.volume / 100
-            audio.src = e.target.dataset.src
-            audio.play()
+        if (statePower.power === 'On') {            
+            //var audio = new Audio()
+            //audio.volume = stateVolume.volume / 100
+            //audio.src = e.target.dataset.src            
+            //audio.play()            
             const letterKey = e.target.id
             setDisplay({ display: letterKey })
         }
@@ -96,8 +96,8 @@ function App() {
         }
     }
 
-    const handleScene = () => {
-        const switchScene = stateScene.scene === 'A' ? 'B' : 'A'
+    const handleScene = (e) => {
+        const switchScene = e.target.id === 'sceneA' ? 'A' : 'B'
         const messageDisplay = switchScene === 'A' ? 'Scene А' : 'Scene B'
         selectScene = switchScene === 'A' ? sceneA : sceneB
         setScene({ scene: switchScene })
@@ -122,10 +122,10 @@ function App() {
             <div className='row'>
                 <div className='drum-pads'>
                     {selectScene.map((index) => (
-                        <DrumPads
+                        <DrumPad
                             onClick={handlePad}
-                            key={index.id}
-                            letter={index.id}
+                            key={index.keyLetter}
+                            letter={index.keyLetter}
                             src={index.src}
                             power={statePower.power}
                         />
@@ -135,7 +135,8 @@ function App() {
                     volume={stateVolume.volume}
                     handleVolume={handleVolume}
                     scene={stateScene.scene}
-                    onScene={handleScene}
+                    onSceneA={handleScene}
+                    onSceneB={handleScene}
                     power={statePower.power}
                     onPower={handlePower}
                 />
@@ -145,7 +146,7 @@ function App() {
 
 }
 
-const Display = (props) => {   
+const Display = (props) => {
     const colorDisplay = props.power === 'On' ? 'display-wrap display-active-color' : 'display-wrap display-inactive-color'
     return (
         <div className={colorDisplay}>
@@ -154,17 +155,21 @@ const Display = (props) => {
     )
 }
 
-
-const DrumPads = (props) => {
-    console.log(props.power)
+const DrumPad = (props) => {
     const powerOnPad = props.power === 'On' ? 'drum-pad power-on-pad' : 'drum-pad'
+    function playSound(e) {
+        const sound = document.getElementById(props.letter)
+        //sound.currentTime = 0
+        sound.play()
+        console.log(sound)
+    }
     return (
         <div
             className={powerOnPad}
-            id={props.letter}
-            onClick={props.onClick}
-            data-src={props.src}
+            //id={props.letter}
+            onClick={playSound} //{props.onClick}
         >
+            <audio id={props.letter} className='clip' src={props.src}></audio>
             {props.letter}
         </div>
     )
@@ -179,7 +184,9 @@ const DrumPadControls = (props) => (
         <div className='switch-btn-wrapper'>
             <Scene
                 scene={props.scene}
-                onScene={props.onScene}
+                onSceneA={props.onSceneA}
+                onSceneB={props.onSceneB}
+                power={props.power}
             />
             <Power
                 power={props.power}
@@ -200,27 +207,41 @@ const Volume = (props) => (
     </div>
 )
 
-const Scene = (props) => (
-    <div
-        id='scene'
-        className='switch-btn'
-        onClick={props.onScene}
-    >
-        {'Scene' + props.scene}
-    </div>
-)
+const Scene = (props) => {
+    const colorPower = props.power === 'On' ? 'button-active-color' : 'button-active-color-power-off'
+    const switchButtonA = props.scene === 'A' ? ('switch-btn ' + colorPower) : 'switch-btn button-inactive-color'
+    const switchButtonB = props.scene === 'B' ? ('switch-btn ' + colorPower) : 'switch-btn button-inactive-color'
+    return (
+        <div>
+            <div
+                id='sceneA'
+                className={switchButtonA}
+                onClick={props.onSceneA}
+            >
+                {'SceneA'}
+            </div>
+            <div
+                id='sceneB'
+                className={switchButtonB}
+                onClick={props.onSceneB}
+            >
+                {'SceneB'}
+            </div>
+        </div>
+    )
+}
 
 
 
 const Power = (props) => {
-    const colorPower = (props.power === 'On') ? 'switch-btn power-active-color' : 'switch-btn power-inactive-color'
+    const colorPower = (props.power === 'On') ? 'switch-btn button-active-color' : 'switch-btn button-inactive-color'
     return (
         <div
             id='power'
             className={colorPower}
             onClick={props.onPower}
         >
-            {'Power' + props.power}
+            {'Pow' + props.power}
         </div >
     )
 }

@@ -92,8 +92,12 @@
   border: 1px solid #000000;
   cursor: pointer; }
 
-.power-active-color {
+.button-active-color {
+  background-color: #00AD20;
+  background: radial-gradient(#b6d6bc, #00AD20); }
+
+.button-active-color-power-off {
   background-color: #00AD20; }
 
-.power-inactive-color {
+.button-inactive-color {
   background-color: #5A9966; }
