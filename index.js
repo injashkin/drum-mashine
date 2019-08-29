@@ -167,19 +167,19 @@ var Display = function Display(props) {
 };
 
 var DrumPad = function DrumPad(props) {
+    var nameFile = props.src.match(/[A-Za-z0-9_-]*(?=.mp3)/)[0].replace(/_/g, "-");
     var powerOnPad = props.power === 'On' ? 'drum-pad power-on-pad' : 'drum-pad';
     function playSound(e) {
         var sound = document.getElementById(props.letter);
         //sound.currentTime = 0
         sound.play();
-        console.log(sound);
     }
     return React.createElement(
         'div',
         {
-            className: powerOnPad
-            //id={props.letter}
-            , onClick: playSound //{props.onClick}
+            className: powerOnPad,
+            id: nameFile,
+            onClick: playSound //{props.onClick}
         },
         React.createElement('audio', { id: props.letter, className: 'clip', src: props.src }),
         props.letter

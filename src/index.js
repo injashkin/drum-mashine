@@ -156,17 +156,18 @@ const Display = (props) => {
 }
 
 const DrumPad = (props) => {
+    let nameFile = props.src.match(/[A-Za-z0-9_-]*(?=.mp3)/)[0].replace(/_/g, "-")
     const powerOnPad = props.power === 'On' ? 'drum-pad power-on-pad' : 'drum-pad'
     function playSound(e) {
         const sound = document.getElementById(props.letter)
         //sound.currentTime = 0
         sound.play()
-        console.log(sound)
+        
     }
     return (
         <div
             className={powerOnPad}
-            //id={props.letter}
+            id={nameFile}
             onClick={playSound} //{props.onClick}
         >
             <audio id={props.letter} className='clip' src={props.src}></audio>
