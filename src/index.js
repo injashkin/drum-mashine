@@ -79,13 +79,14 @@ function App() {
     const [statePower, setPower] = React.useState({ power: 'On' })
 
     const handlePad = (e) => {
-        if (statePower.power === 'On') {            
-            //var audio = new Audio()
-            //audio.volume = stateVolume.volume / 100
-            //audio.src = e.target.dataset.src            
-            //audio.play()            
-            const letterKey = e.target.id
-            setDisplay({ display: letterKey })
+        if (statePower.power === 'On') {  
+            const element = e.target.innerHTML.match(/.$/)[0]            
+            const audio = document.getElementById(element)    
+            audio.volume = stateVolume.volume / 100 
+            audio.currentTime = 0;   
+            audio.play()                  
+            const audioName = e.target.id
+            setDisplay({ display: audioName })
         }
     }
 
@@ -156,19 +157,14 @@ const Display = (props) => {
 }
 
 const DrumPad = (props) => {
+    //Выделяет имя аудиофайла из урл и сохраняет в nameFile
     let nameFile = props.src.match(/[A-Za-z0-9_-]*(?=.mp3)/)[0].replace(/_/g, "-")
     const powerOnPad = props.power === 'On' ? 'drum-pad power-on-pad' : 'drum-pad'
-    function playSound(e) {
-        const sound = document.getElementById(props.letter)
-        //sound.currentTime = 0
-        sound.play()
-        
-    }
     return (
         <div
             className={powerOnPad}
             id={nameFile}
-            onClick={playSound} //{props.onClick}
+            onClick={props.onClick}
         >
             <audio id={props.letter} className='clip' src={props.src}></audio>
             {props.letter}

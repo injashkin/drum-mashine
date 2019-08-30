@@ -84,12 +84,13 @@ function App() {
 
     var handlePad = function handlePad(e) {
         if (statePower.power === 'On') {
-            //var audio = new Audio()
-            //audio.volume = stateVolume.volume / 100
-            //audio.src = e.target.dataset.src            
-            //audio.play()            
-            var letterKey = e.target.id;
-            setDisplay({ display: letterKey });
+            var element = e.target.innerHTML.match(/.$/)[0];
+            var audio = document.getElementById(element);
+            audio.volume = stateVolume.volume / 100;
+            audio.currentTime = 0;
+            audio.play();
+            var audioName = e.target.id;
+            setDisplay({ display: audioName });
         }
     };
 
@@ -167,19 +168,15 @@ var Display = function Display(props) {
 };
 
 var DrumPad = function DrumPad(props) {
+    //Выделяет имя аудиофайла из урл и сохраняет в nameFile
     var nameFile = props.src.match(/[A-Za-z0-9_-]*(?=.mp3)/)[0].replace(/_/g, "-");
     var powerOnPad = props.power === 'On' ? 'drum-pad power-on-pad' : 'drum-pad';
-    function playSound(e) {
-        var sound = document.getElementById(props.letter);
-        //sound.currentTime = 0
-        sound.play();
-    }
     return React.createElement(
         'div',
         {
             className: powerOnPad,
             id: nameFile,
-            onClick: playSound //{props.onClick}
+            onClick: props.onClick
         },
         React.createElement('audio', { id: props.letter, className: 'clip', src: props.src }),
         props.letter
