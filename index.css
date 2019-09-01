@@ -58,6 +58,9 @@
 .power-on-pad {
   background: radial-gradient(#b6d6bc, #5A9966); }
 
+.button-active-pad {
+  background: radial-gradient(#ffffff, #00AD20); }
+
 .letter-key {
   margin: auto; }
 

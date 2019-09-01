@@ -79,6 +79,10 @@ $inactive-display: #79846c;
     background: radial-gradient(#b6d6bc, $inactive-button)
 }
 
+.button-active-pad {
+    background: radial-gradient(#ffffff, $active-button)
+}
+
 .letter-key {
     margin: auto;
 }

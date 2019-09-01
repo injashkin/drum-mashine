@@ -82,16 +82,36 @@ function App() {
         statePower = _React$useState8[0],
         setPower = _React$useState8[1];
 
+    var _React$useState9 = React.useState({ style: '' }),
+        _React$useState10 = _slicedToArray(_React$useState9, 2),
+        stateStyle = _React$useState10[0],
+        setStyle = _React$useState10[1];
+
+    var _React$useState11 = React.useState({ keycode: '' }),
+        _React$useState12 = _slicedToArray(_React$useState11, 2),
+        stateKeycode = _React$useState12[0],
+        setKeycode = _React$useState12[1];
+
     var handlePad = function handlePad(e) {
+        console.log('sdffg');
         if (statePower.power === 'On') {
-            var element = e.target.innerHTML.match(/.$/)[0];
-            var audio = document.getElementById(element);
+            var innerText = e.target.innerHTML.match(/.$/)[0];
+            var audio = document.getElementById(innerText);
             audio.volume = stateVolume.volume / 100;
             audio.currentTime = 0;
             audio.play();
             var audioName = e.target.id;
+            var elem = document.getElementById(e.target.id);
+            elem.className = 'drum-pad button-active-pad';
+            setTimeout(function () {
+                return elem.className = 'drum-pad power-on-pad';
+            }, 400);
             setDisplay({ display: audioName });
         }
+    };
+
+    var changeKeyCode = function changeKeyCode() {
+        console.log('fghdhdsafghjytj');
     };
 
     var handleVolume = function handleVolume(e) {
@@ -133,11 +153,14 @@ function App() {
                 { className: 'drum-pads' },
                 selectScene.map(function (index) {
                     return React.createElement(DrumPad, {
-                        onClick: handlePad,
+                        handlePad: handlePad,
                         key: index.keyLetter,
                         letter: index.keyLetter,
                         src: index.src,
-                        power: statePower.power
+                        power: statePower.power,
+                        style: stateStyle.style,
+                        changeKeyCode: changeKeyCode
+
                     });
                 })
             ),
@@ -168,6 +191,14 @@ var Display = function Display(props) {
 };
 
 var DrumPad = function DrumPad(props) {
+    addEventListener("keydown", function (event) {
+        console.log(event.keyCode);
+        console.log(props.letter);
+        if (String.fromCharCode(event.keyCode) === props.letter) {
+            var changeKeyCode = props.letter;
+            console.log(changeKeyCode + 'wert');
+        }
+    });
     //Выделяет имя аудиофайла из урл и сохраняет в nameFile
     var nameFile = props.src.match(/[A-Za-z0-9_-]*(?=.mp3)/)[0].replace(/_/g, "-");
     var powerOnPad = props.power === 'On' ? 'drum-pad power-on-pad' : 'drum-pad';
@@ -176,9 +207,10 @@ var DrumPad = function DrumPad(props) {
         {
             className: powerOnPad,
             id: nameFile,
-            onClick: props.onClick
+            onClick: props.handlePad,
+            onChange: props.changeKeyCode
         },
-        React.createElement('audio', { id: props.letter, className: 'clip', src: props.src }),
+        React.createElement('audio', { className: 'clip', id: props.letter, src: props.src }),
         props.letter
     );
 };
