@@ -92,28 +92,6 @@ function App() {
         stateKeycode = _React$useState12[0],
         setKeycode = _React$useState12[1];
 
-    var handlePad = function handlePad(e) {
-        console.log('sdffg');
-        if (statePower.power === 'On') {
-            var innerText = e.target.innerHTML.match(/.$/)[0];
-            var audio = document.getElementById(innerText);
-            audio.volume = stateVolume.volume / 100;
-            audio.currentTime = 0;
-            audio.play();
-            var audioName = e.target.id;
-            var elem = document.getElementById(e.target.id);
-            elem.className = 'drum-pad button-active-pad';
-            setTimeout(function () {
-                return elem.className = 'drum-pad power-on-pad';
-            }, 400);
-            setDisplay({ display: audioName });
-        }
-    };
-
-    var changeKeyCode = function changeKeyCode() {
-        console.log('fghdhdsafghjytj');
-    };
-
     var handleVolume = function handleVolume(e) {
         setVolume({ volume: e.target.value });
         if (statePower.power === 'On') {
@@ -153,14 +131,13 @@ function App() {
                 { className: 'drum-pads' },
                 selectScene.map(function (index) {
                     return React.createElement(DrumPad, {
-                        handlePad: handlePad,
                         key: index.keyLetter,
                         letter: index.keyLetter,
                         src: index.src,
                         power: statePower.power,
                         style: stateStyle.style,
-                        changeKeyCode: changeKeyCode
-
+                        display: stateDisplay.display,
+                        volume: stateVolume.volume
                     });
                 })
             ),
@@ -191,14 +168,32 @@ var Display = function Display(props) {
 };
 
 var DrumPad = function DrumPad(props) {
-    addEventListener("keydown", function (event) {
-        console.log(event.keyCode);
-        console.log(props.letter);
-        if (String.fromCharCode(event.keyCode) === props.letter) {
+    document.addEventListener("keydown", function (e) {
+        if (String.fromCharCode(e.keyCode) === props.letter) {
             var changeKeyCode = props.letter;
             console.log(changeKeyCode + 'wert');
+            handlePad();
         }
     });
+
+    var handlePad = function handlePad(e) {
+        console.log('sdffg');
+        if (props.power === 'On') {
+            var innerText = e.target.innerHTML.match(/.$/)[0];
+            var audio = document.getElementById(innerText);
+            audio.volume = props.volume / 100;
+            audio.currentTime = 0;
+            audio.play();
+            //const audioName = e.target.id
+            var elem = document.getElementById(e.target.id);
+            elem.className = 'drum-pad button-active-pad';
+            setTimeout(function () {
+                return elem.className = 'drum-pad power-on-pad';
+            }, 400);
+            //setDisplay({ display: audioName })
+        }
+    };
+
     //Выделяет имя аудиофайла из урл и сохраняет в nameFile
     var nameFile = props.src.match(/[A-Za-z0-9_-]*(?=.mp3)/)[0].replace(/_/g, "-");
     var powerOnPad = props.power === 'On' ? 'drum-pad power-on-pad' : 'drum-pad';
@@ -207,8 +202,7 @@ var DrumPad = function DrumPad(props) {
         {
             className: powerOnPad,
             id: nameFile,
-            onClick: props.handlePad,
-            onChange: props.changeKeyCode
+            onClick: handlePad
         },
         React.createElement('audio', { className: 'clip', id: props.letter, src: props.src }),
         props.letter
