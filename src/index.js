@@ -79,7 +79,9 @@ function App() {
     const [statePower, setPower] = React.useState({ power: 'On' })
     const [stateStyle, setStyle] = React.useState({ style: '' })
     const [stateKeycode, setKeycode] = React.useState({ keycode: '' })
-    
+
+    const displayAudioName = name => setDisplay({ display: name })
+
     const handleVolume = (e) => {
         setVolume({ volume: e.target.value })
         if (statePower.power === 'On') {
@@ -113,14 +115,14 @@ function App() {
             <div className='row'>
                 <div className='drum-pads'>
                     {selectScene.map((index) => (
-                        <DrumPad                            
+                        <DrumPad
                             key={index.keyLetter}
-                            letter={index.keyLetter}
+                            keyLetter={index.keyLetter}
                             src={index.src}
                             power={statePower.power}
-                            style={stateStyle.style}   
-                            display={stateDisplay.display}
-                            volume={stateVolume.volume}                           
+                            style={stateStyle.style}
+                            display={displayAudioName}
+                            volume={stateVolume.volume}
                         />
                     ))}
                 </div>
@@ -136,7 +138,6 @@ function App() {
             </div>
         </div>
     )
-
 }
 
 const Display = (props) => {
@@ -149,29 +150,38 @@ const Display = (props) => {
 }
 
 const DrumPad = (props) => {
-    document.addEventListener("keydown", function (e) {        
-        if (String.fromCharCode(e.keyCode) === props.letter) {
-            const changeKeyCode = props.letter
-            console.log(changeKeyCode + 'wert')     
-            handlePad()     
+    
+    document.addEventListener('keydown', function (e) {
+        if (String.fromCharCode(e.keyCode) === props.keyLetter) {
+            handlePad()
         }
     })
 
-    const handlePad = (e) => {
-        console.log('sdffg')
+        //document.addEventListener('keydown', handleKeyPress)
+        //useEffect(() => {
+        //    document.addEventListener('keydown', handleKeyPress)
+        //})    
+
+        //const handleKeyPress = (e) => {
+        //    if (String.fromCharCode(e.keyCode) === props.keyLetter) {
+        //        handlePad()
+        //    }
+        //}
+
+        const handlePad = (e) => {
         if (props.power === 'On') {
-            const innerText = e.target.innerHTML.match(/.$/)[0]
-            const audio = document.getElementById(innerText)
+            const audio = document.getElementById(props.keyLetter)
+            console.log(audio)
             audio.volume = props.volume / 100
-            audio.currentTime = 0;
             audio.play()
-            //const audioName = e.target.id
-            const elem = document.getElementById(e.target.id)
+            const elem = document.getElementById(nameFile)
             elem.className = 'drum-pad button-active-pad'
-            setTimeout(() => (elem.className = 'drum-pad power-on-pad'), 400);
+            setTimeout(() => (elem.className = 'drum-pad power-on-pad'), 400)
+            console.log(nameFile)
+            props.display(nameFile)
             //setDisplay({ display: audioName })
         }
-    }    
+    }
 
     //Выделяет имя аудиофайла из урл и сохраняет в nameFile
     let nameFile = props.src.match(/[A-Za-z0-9_-]*(?=.mp3)/)[0].replace(/_/g, "-")
@@ -180,10 +190,10 @@ const DrumPad = (props) => {
         <div
             className={powerOnPad}
             id={nameFile}
-            onClick={handlePad}             
+            onClick={handlePad}
         >
-            <audio className='clip' id={props.letter} src={props.src}></audio>
-            {props.letter}
+            <audio className='clip' id={props.keyLetter} src={props.src}></audio>
+            {props.keyLetter}
         </div>
     )
 }
