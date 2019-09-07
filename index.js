@@ -53,7 +53,7 @@ var sceneB = [{
     src: 'https://s3.amazonaws.com/freecodecamp/drums/punchy_kick_1.mp3'
 }, {
     keyLetter: 'X',
-    src: 'https://s3.amazonaws.com/freecodecamp/drums/skeyLettere_stick_1.mp3'
+    src: 'https://s3.amazonaws.com/freecodecamp/drums/side_stick_1.mp3'
 }, {
     keyLetter: 'C',
     src: 'https://s3.amazonaws.com/freecodecamp/drums/Brk_Snr.mp3'
@@ -93,7 +93,7 @@ function App() {
         setKeycode = _React$useState12[1];
 
     var displayAudioName = function displayAudioName(name) {
-        return setDisplay({ display: name });
+        setDisplay({ display: name });
     };
 
     var handleVolume = function handleVolume(e) {
@@ -133,14 +133,14 @@ function App() {
             React.createElement(
                 'div',
                 { className: 'drum-pads' },
-                selectScene.map(function (index) {
+                selectScene.map(function (value) {
                     return React.createElement(DrumPad, {
-                        key: index.keyLetter,
-                        keyLetter: index.keyLetter,
-                        src: index.src,
+                        key: value.keyLetter,
+                        keyLetter: value.keyLetter,
+                        src: value.src,
                         power: statePower.power,
                         style: stateStyle.style,
-                        display: displayAudioName,
+                        displayName: displayAudioName,
                         volume: stateVolume.volume
                     });
                 })
@@ -173,27 +173,22 @@ var Display = function Display(props) {
 
 var DrumPad = function DrumPad(props) {
 
-    document.addEventListener('keydown', function (e) {
+    React.useEffect(function () {
+        document.addEventListener('keydown', handleKeyPress);
+        return function () {
+            document.removeEventListener('keydown', handleKeyPress);
+        };
+    });
+
+    function handleKeyPress(e) {
         if (String.fromCharCode(e.keyCode) === props.keyLetter) {
             handlePad();
         }
-    });
+    }
 
-    //document.addEventListener('keydown', handleKeyPress)
-    //useEffect(() => {
-    //    document.addEventListener('keydown', handleKeyPress)
-    //})    
-
-    //const handleKeyPress = (e) => {
-    //    if (String.fromCharCode(e.keyCode) === props.keyLetter) {
-    //        handlePad()
-    //    }
-    //}
-
-    var handlePad = function handlePad(e) {
+    function handlePad() {
         if (props.power === 'On') {
             var audio = document.getElementById(props.keyLetter);
-            console.log(audio);
             audio.volume = props.volume / 100;
             audio.play();
             var elem = document.getElementById(nameFile);
@@ -201,15 +196,14 @@ var DrumPad = function DrumPad(props) {
             setTimeout(function () {
                 return elem.className = 'drum-pad power-on-pad';
             }, 400);
-            console.log(nameFile);
-            props.display(nameFile);
-            //setDisplay({ display: audioName })
+            props.displayName(nameFile);
         }
-    };
+    }
 
     //Выделяет имя аудиофайла из урл и сохраняет в nameFile
-    var nameFile = props.src.match(/[A-Za-z0-9_-]*(?=.mp3)/)[0].replace(/_/g, "-");
+    var nameFile = props.src.match(/[A-Za-z0-9_-]*(?=.wav|.mp3)/)[0].replace(/_/g, " ");
     var powerOnPad = props.power === 'On' ? 'drum-pad power-on-pad' : 'drum-pad';
+
     return React.createElement(
         'div',
         {
