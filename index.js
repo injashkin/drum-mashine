@@ -129,7 +129,7 @@ function App() {
         }),
         React.createElement(
             'div',
-            { className: 'row' },
+            { className: 'row1' },
             React.createElement(
                 'div',
                 { className: 'drum-pads' },
@@ -219,7 +219,7 @@ var DrumPad = function DrumPad(props) {
 var DrumPadControls = function DrumPadControls(props) {
     return React.createElement(
         'div',
-        { className: 'drum-pad-controls row' },
+        { className: 'drum-pad-controls row1' },
         React.createElement(Volume, {
             volume: props.volume,
             handleVolume: props.handleVolume

@@ -5,9 +5,8 @@ $inactive-button: #5A9966;
 $active-display: #5498d1;
 $inactive-display: #79846c;
 
-// #743d30;
-
 #root{
+    font-size: 1.2em;
     display: flex;
     height: 98vh;
 }
@@ -50,7 +49,7 @@ $inactive-display: #79846c;
     margin-bottom: 0.5em;
 }
 
-.row {
+.row1 {
     display: flex;
     flex-direction: row;
 }
@@ -100,10 +99,10 @@ $inactive-display: #79846c;
     background-color: #743d30;
     
     input {
-        width: 16em;
+        width: 14em;
         height: 2em;
         margin: 0;
-        transform-origin: 8.5em 8.5em 0;
+        transform-origin: 7.2em 7.2em 0;
         transform: rotate(-90deg);  
         cursor: pointer;      
     }

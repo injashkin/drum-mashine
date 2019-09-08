@@ -1,4 +1,5 @@
 #root {
+  font-size: 1.2em;
   display: flex;
   height: 98vh; }
 
@@ -34,7 +35,7 @@
   margin-left: 0.5em;
   margin-bottom: 0.5em; }
 
-.row {
+.row1 {
   display: flex;
   flex-direction: row; }
 
@@ -75,10 +76,10 @@
   border: 1px solid #000000;
   background-color: #743d30; }
   .volume-wrapper input {
-    width: 16em;
+    width: 14em;
     height: 2em;
     margin: 0;
-    transform-origin: 8.5em 8.5em 0;
+    transform-origin: 7.2em 7.2em 0;
     transform: rotate(-90deg);
     cursor: pointer; }
 

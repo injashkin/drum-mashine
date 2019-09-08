@@ -114,7 +114,7 @@ function App() {
                 display={stateDisplay.display}
                 power={statePower.power}
             />
-            <div className='row'>
+            <div className='row1'>
                 <div className='drum-pads'>
                     {selectScene.map((value) => (
                         <DrumPad
@@ -196,7 +196,7 @@ const DrumPad = (props) => {
 }
 
 const DrumPadControls = (props) => (
-    <div className='drum-pad-controls row'>
+    <div className='drum-pad-controls row1'>
         <Volume
             volume={props.volume}
             handleVolume={props.handleVolume}
